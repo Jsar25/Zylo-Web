@@ -79,7 +79,9 @@ nav a:hover {
 
 /* Main */
 main {
-    padding: 20px;
+    max-width: 1100px;
+  margin: auto;
+  padding: 40px 20px;
 }
 
 /* Secciones */
@@ -120,10 +122,18 @@ article img {
 h2 {
     text-align: center;
     color: #023e8a;
+    margin-top: 0;
+    margin-bottom: 15px;
 }
 
 h3 {
     color: #0077b6;
+}
+
+/* PARRAFOS */
+p {
+  line-height: 1.7;
+  font-size: 16px;
 }
 
 /* FOOTER */
@@ -138,29 +148,45 @@ footer {
 /* FORMULARIO */
 form {
     max-width: 400px;
-    margin: auto;
+    margin: 0 auto; 
+    background: white;
+    padding: 30px; 
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-align: left; 
 }
 
 input, textarea, select {
     width: 100%;
-    padding: 10px;
+    padding: 12px; 
     margin-top: 5px;
+    margin-bottom: 15px;
     border-radius: 8px;
     border: 1px solid #ccc;
+    box-sizing: border-box; 
+    font-family: inherit;
 }
 
 button {
     background: #0077b6;
     color: white;
-    padding: 10px;
+    padding: 12px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     width: 100%;
+    font-weight: bold;
+    font-size: 16px;
+    transition: 0.3s;
 }
 
 button:hover {
     background: #023e8a;
+}
+
+textarea {
+    height: 120px;
+    resize: none;
 }
 
 /* Página Nosotros */
@@ -173,15 +199,24 @@ button:hover {
 .texto-nosotros {
     flex: 2;
     text-align: left;
+    max-width: 650px;
+
 }
 
 .texto-nosotros h2 {
     text-align: left;
     color: #023e8a;
+    margin-top: 25px;
 }
 
-.texto-nosotros p, .texto-nosotros ul {
+.texto-nosotros ul {
     text-align: left;
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+.texto-nosotros li {
+  margin-bottom: 8px;
 }
 
 .imagen-nosotros {
@@ -196,29 +231,43 @@ button:hover {
 }
 
 /* Página Contacto */
+
 .contacto-content {
     display: flex;
-    gap: 15px;
+    gap: 40px;
     align-items: flex-start;
+    justify-content: center; 
+     
+    
+}
+
+.contacto-content > section:first-child {
+    flex: 1;
+    min-width: 300px;
+    text-align: center; 
 }
 
 .formulario-contacto {
     flex: 1;
     text-align: left;
+    
 }
 
 .formulario-contacto h2 {
-    text-align: left;
     color: #023e8a;
+    margin-bottom: 10px;
+    text-align: center;
 }
 
 .formulario-contacto p {
-    text-align: left;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .destinos-contacto {
     flex: 1;
-    text-align: left;
+    min-width: 300px;
+    text-align: center;
 }
 
 .destinos-contacto h2 {
