@@ -9,30 +9,29 @@ body {
 header {
     background: linear-gradient(to right, #163857, #106780);
     color: white;
-    text-align: center;
-    padding: 30px 20px;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 header h1{
     margin: 0;
-    font-size: 40px;
+    font-size: 32px;
+    flex-shrink: 0;
 }
 
 header p{
-    margin-top: 10px;
-    font-size: 18px;
+    display: none;
 }
 
-/* Nav */
-nav {
-    background-color: #023e8a;
-    padding: 12px;
-    text-align: center;
+header nav {
+    display: flex;
+    gap: 25px;
 }
 
 nav a {
     color: white;
-    margin: 0 15px;
     text-decoration: none;
     font-weight: bold;
     transition: 0.6s;
@@ -42,9 +41,45 @@ nav a:hover {
     color: #90e0ef;
 }
 
+/* Hero Section */
+.hero {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+}
+
+.hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.hero-content {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    text-align: right;
+    color: white;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+
+}
+
+.hero-content h1 {
+    margin: 0;
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.hero-content p {
+    margin: 10px 0 0 0;
+    font-size: 20px;
+}
+
 /* Main */
 main {
-    padding: 30px;
+    padding: 20px;
 }
 
 /* Secciones */
@@ -54,13 +89,22 @@ section {
 
 
 /* Destinos */
+.destinos-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
 article {
     background: white;
     padding: 15px;
-    margin: 15px 0;
+    margin: 0;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     text-align: center;
+    flex: 1;
+    min-width: 250px;
 }
 
 
@@ -117,4 +161,103 @@ button {
 
 button:hover {
     background: #023e8a;
+}
+
+/* Página Nosotros */
+.nosotros-content {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.texto-nosotros {
+    flex: 2;
+    text-align: left;
+}
+
+.texto-nosotros h2 {
+    text-align: left;
+    color: #023e8a;
+}
+
+.texto-nosotros p, .texto-nosotros ul {
+    text-align: left;
+}
+
+.imagen-nosotros {
+    flex: 1;
+}
+
+.imagen-nosotros img {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Página Contacto */
+.contacto-content {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.formulario-contacto {
+    flex: 1;
+    text-align: left;
+}
+
+.formulario-contacto h2 {
+    text-align: left;
+    color: #023e8a;
+}
+
+.formulario-contacto p {
+    text-align: left;
+}
+
+.destinos-contacto {
+    flex: 1;
+    text-align: left;
+}
+
+.destinos-contacto h2 {
+    text-align: left;
+    color: #023e8a;
+}
+
+.destinos-contacto .destinos-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.destinos-contacto article {
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.destinos-contacto article img {
+    width: 120px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.destinos-contacto article .texto-destino {
+    flex: 1;
+}
+
+.destinos-contacto article h3 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+}
+
+.destinos-contacto article p {
+    margin: 0;
+    font-size: 14px;
 }
