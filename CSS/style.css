@@ -310,3 +310,67 @@ textarea {
     margin: 0;
     font-size: 14px;
 }
+
+
+
+
+/* Móvil */
+@media (max-width: 600px) {
+    header {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+
+    header nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .hero {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .hero-content {
+        position: static;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .nosotros-content,
+    .contacto-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .destinos-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/*  TABLET */
+@media (max-width: 900px) {
+
+    .destinos-container {
+        justify-content: center;
+    }
+
+    article {
+        flex: 0 0 45%;
+    }
+
+    .nosotros-content {
+        flex-direction: column;
+    }
+}
+
+
+/* Escritorio */
+@media (min-width: 1200px) {
+
+    main {
+        max-width: 1200px;
+    }
+}
