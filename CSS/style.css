@@ -2,7 +2,9 @@ body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f5f7fa;
-
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Header */
@@ -14,6 +16,18 @@ header {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+header h1 a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    transition: 0.3s;
+}
+
+header h1 a:hover img {
+    opacity: 0.8;
 }
 
 header h1 img{
@@ -85,11 +99,81 @@ nav a:hover {
     font-size: 20px;
 }
 
+.discount-hero{
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+}
+
+.discount-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.discount-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.discount-hero-content {
+    position: absolute;
+    top: 50%;
+    left: 40px;
+    transform: translateY(-50%);
+    text-align: left;
+    color: white;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    max-width: 600px;
+}
+
+.discount-hero-content h1 {
+    margin: 0 0 20px 0;
+    font-size: 40px;
+    font-weight: bold;
+    line-height: 1.4;
+}
+
+.discount-hero-content p {
+    margin: 0 0 30px 0;
+    font-size: 18px;
+}
+
+.discount-hero-content .btn-contact {
+    display: inline-block;
+    background: #0077b6;
+    color: white;
+    padding: 14px 30px;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.discount-hero-content .btn-contact:hover {
+    background: #023e8a;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
 /* Main */
 main {
     max-width: 1100px;
   margin: auto;
   padding: 40px 20px;
+  flex: 1;
 }
 
 /* Secciones */
@@ -346,6 +430,38 @@ textarea {
         padding: 10px;
     }
 
+    .discount-hero {
+        height: 350px;
+    }
+
+    .discount-hero-content {
+        left: 20px;
+        right: 20px;
+        max-width: none;
+    }
+
+    .discount-hero-content h1 {
+        font-size: 28px;
+    }
+
+    .discount-hero-content p {
+        font-size: 16px;
+    }
+
+    .discount-hero-content .btn-contact {
+        width: 100%;
+        text-align: center;
+    }
+
+    .clientes-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cliente-card {
+        max-width: 100%;
+    }
+
     .nosotros-content,
     .contacto-content {
         flex-direction: column;
@@ -360,6 +476,10 @@ textarea {
 
 /*  TABLET */
 @media (max-width: 900px) {
+
+    .discount-hero-content h1 {
+        font-size: 32px;
+    }
 
     .destinos-container {
         justify-content: center;
@@ -431,4 +551,59 @@ textarea {
 .servicios-container p {
     font-size: 15px;
     padding: 0 10px 15px;
+}
+
+/* Clientes Satisfechos */
+.clientes-container {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.cliente-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-width: 280px;
+    max-width: 320px;
+    border-left: 4px solid #0077b6;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.cliente-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.cliente-card .estrellas {
+    font-size: 24px;
+    color: #ffc107;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+}
+
+.cliente-card .testimonio {
+    font-size: 15px;
+    font-style: italic;
+    color: #333;
+    line-height: 1.6;
+    margin: 15px 0;
+}
+
+.cliente-card .cliente-nombre {
+    font-weight: bold;
+    color: #0077b6;
+    margin: 10px 0 5px 0;
+    font-size: 16px;
+}
+
+.cliente-card .cliente-ciudad {
+    color: #888;
+    font-size: 14px;
+    margin: 0;
 }
