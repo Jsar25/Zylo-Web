@@ -5,6 +5,8 @@
     <title>Zylo</title>
     <link rel="stylesheet" href="../CSS/style.css">
     <link rel="icon" href="../CSS/img/icon ZYLO-02-02.png " type="image/img">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
 
 <body>
@@ -25,11 +27,44 @@
 </header>
 
 <section class="hero">
-    <img src="../CSS/img/alejomiranda-ecuador-766946.jpg" alt="Chimborazo">
-    <div class="hero-content">
-        <h1>Zylo</h1>
-        <p>Descubre el mundo a tu manera</p>
-    </div>
+
+  <img src="../CSS/img/alejomiranda-ecuador-766946.jpg" alt="Chimborazo">
+
+  <div class="hero-content">
+    <h1>Zylo</h1>
+    <p>Descubre el mundo a tu manera</p>
+
+    <!-- BARRA DE BÚSQUEDA -->
+    <form id="formVuelos" class="search-bar">
+
+    <select id="tipoVuelo">
+        <option value="ida">Solo ida</option>
+        <option value="idaVuelta">Ida y vuelta</option>
+    </select>
+
+    <input type="text" id="origen" placeholder="Origen">
+
+    <button type="button" class="swap">⇄</button>
+
+    <input type="text" id="destino" placeholder="Destino">
+
+    <input type="text" id="fechaSalida" placeholder="Salida">
+    <input type="text" id="fechaRegreso" placeholder="Regreso">
+
+    <select id="pasajeros">
+        <option>1 pasajero</option>
+        <option>2 pasajeros</option>
+        <option>3 pasajeros</option>
+    </select>
+
+
+    <button type="submit" id="btnBuscar">
+        Buscar
+    </button>
+
+    </form>
+
+  </div>
 </section>
 
 <main>
@@ -108,5 +143,25 @@
     <p>© 2026 Zylo - Todos los derechos reservados</p>
 </footer>
 
+
+    <div id="modalContacto" class="modal">
+    <div class="modal-content">
+        
+        <h2>Primera vez</h2>
+        <p>¿Deseas recibir notificaciones de tu viaje?</p>
+
+        <input type="email" id="modalEmail" placeholder="Correo electrónico">
+        <input type="tel" id="modalPhone" placeholder="09XXXXXXXX" pattern="09[0-9]{8}">
+
+        <div class="modal-actions">
+        <button type="button" id="cancelarModal">Cancelar</button>
+        <button type="button" id="guardarModal">Continuar</button>
+        </div>
+
+    </div>
+    </div>
+
+<script src="../JS/form.js"></script>
+<script src="../JS/pick-date.js"></script>
 </body>
 </html>
