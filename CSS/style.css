@@ -805,3 +805,50 @@ form.search-bar .swap {
 }
 
 
+.error-msg {
+    color: red;
+    font-size: 13px;
+    display: block;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+.input-error {
+    border: 2px solid red;
+}
+
+.input-ok {
+    border: 2px solid green;
+}
+
+.mensaje-exito {
+    color: green;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.inicial {
+    text-align: center;
+    padding: 20px;
+    color: #333;
+}
+
+.buscando {
+    text-align: center;
+    padding: 20px;
+    font-weight: bold;
+    color: #0077b6;
+}
+
+.resultado {
+    padding: 20px;
+}
+
+.card-resultado {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-align: center;
+}

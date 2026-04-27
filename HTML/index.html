@@ -36,6 +36,7 @@
 
     <!-- BARRA DE BÚSQUEDA -->
     <form id="formVuelos" class="search-bar">
+    
 
     <select id="tipoVuelo">
         <option value="ida">Solo ida</option>
@@ -63,6 +64,9 @@
     </button>
 
     </form>
+    <div id="resultadoBusqueda" class="inicial">
+        Ingresa los datos y realiza tu búsqueda.
+    </div>
 
   </div>
 </section>
@@ -151,7 +155,10 @@
         <p>¿Deseas recibir notificaciones de tu viaje?</p>
 
         <input type="email" id="modalEmail" placeholder="Correo electrónico">
+        <small class="error-msg" id="errorEmail"></small>
+
         <input type="tel" id="modalPhone" placeholder="09XXXXXXXX" pattern="09[0-9]{8}">
+        <small class="error-msg" id="errorPhone"></small>
 
         <div class="modal-actions">
         <button type="button" id="cancelarModal">Cancelar</button>
