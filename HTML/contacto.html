@@ -40,25 +40,27 @@
         <p>¿Tienes preguntas o quieres planear tu próximo viaje? Escríbenos...</p>
 
         <section class="formulario-contacto">
-        <form>
+        <form id="formContacto" novalidate>
             <label>Nombre:</label><br>
-            <input type="text" placeholder="Tu nombre">
+            <input type="text" id="nombreContacto" placeholder="Tu nombre">
+            <small class="error-msg" id="errorNombreContacto"></small>
 
            <label>Correo:</label><br>
-            <input type="email" id="emailContacto" placeholder="tu@email.com" required>
+            <input type="email" id="emailContacto" placeholder="tu@email.com">
             <small class="error-msg" id="errorEmailContacto"></small>
 
             <label>Destino de interés:</label><br>
-            <select>
+            <select id="destinoContacto">
                 <option>Galápagos</option>
                 <option>París</option>
                 <option>New York</option>
             </select>
 
             <label>Mensaje:</label><br>
-            <textarea placeholder="Escribe tu mensaje"></textarea>
+            <textarea id="mensajeContacto" placeholder="Escribe tu mensaje"></textarea>
+            <small class="error-msg" id="errorMensajeContacto"></small>
 
-            <button type="submit">Enviar</button>
+            <button type="submit" id="btnEnviarContacto">Enviar</button>
         </form>
         </section>
     </section>
@@ -100,6 +102,17 @@
 <footer>
     <p>© 2026 Zylo - Todos los derechos reservados</p>
 </footer>
+
+<!-- Modal Exito -->
+<div id="modalExito" class="modal">
+    <div class="modal-content">
+        <h2 style="color: #023e8a; margin-bottom: 15px;">Mensaje Enviado</h2>
+        <p>¡Gracias por contactarnos! Hemos recibido tu mensaje y nos comunicaremos contigo muy pronto.</p>
+        <div class="modal-actions" style="margin-top: 20px; justify-content: center;">
+            <button type="button" id="cerrarModalExito">Cerrar</button>
+        </div>
+    </div>
+</div>
 
 </body>
 <script src="../JS/form.js"></script>
