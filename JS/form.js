@@ -208,6 +208,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const destino = document.querySelector("#destino").value;
 
+            // Recopilar datos en un objeto JSON
+            const datosVuelo = {
+                origen: document.getElementById("origen").value.trim(),
+                destino: destino.trim(),
+                fechaSalida: document.getElementById("fechaSalida").value,
+                fechaRegreso: document.getElementById("fechaRegreso") ? document.getElementById("fechaRegreso").value : null,
+                tipoVuelo: document.getElementById("tipoVuelo") ? document.getElementById("tipoVuelo").value : "redondo",
+                contacto: {
+                    email: email.value.trim(),
+                    telefono: phone.value.trim()
+                }
+            };
+            
+            console.log("JSON a enviar al servidor (Búsqueda Vuelo):", JSON.stringify(datosVuelo, null, 2));
+
             mostrarEstadoBuscando(destino);
 
             setTimeout(() => {
@@ -300,6 +315,17 @@ if (formContacto) {
         event.preventDefault(); // Evitar recargar la página
 
         if (validarCamposContacto()) {
+            
+            // Recopilar datos en un objeto JSON
+            const datosContacto = {
+                nombre: nombreContacto.value.trim(),
+                email: emailContacto.value.trim(),
+                destino: document.getElementById("destinoContacto") ? document.getElementById("destinoContacto").value : "",
+                mensaje: mensajeContacto.value.trim()
+            };
+            
+            console.log("JSON a enviar al servidor (Contacto):", JSON.stringify(datosContacto, null, 2));
+            
             // Mostrar modal de éxito
             if (modalExito) {
                 modalExito.style.display = "flex";
