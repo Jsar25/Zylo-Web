@@ -627,6 +627,10 @@ textarea {
     width: 100%;
 }
 
+.modal-active {
+    display: flex !important;
+}
+
 
 
 /*  FORMULARIO DE VUELOS (SE ESPECIFICÓ PARA NO AFECTA OTROS) */
@@ -838,21 +842,58 @@ form.search-bar .swap {
     margin-top: 15px;
 }
 
+#resultadoBusqueda {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    margin: -110px auto 20px auto; /* negative top margin pulls it into the hero */
+    max-width: 95%;
+    width: 800px;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 30;
+}
+
 .inicial {
     text-align: center;
     padding: 20px;
-    color: #333;
+    color: #555;
+    font-style: italic;
 }
 
 .buscando {
     text-align: center;
-    padding: 20px;
+    padding: 30px;
+    font-size: 1.2rem;
     font-weight: bold;
-    color: #0077b6;
+    color: #023e8a;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.6;
+    }
 }
 
 .resultado {
-    padding: 20px;
+    padding: 25px;
+}
+
+.card-resultado {
+    background: #eaf4f4;
+    border-left: 5px solid #0077b6;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: left;
 }
 
 .card-resultado {

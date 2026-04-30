@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="utf-8">
     <title>Zylo</title>
@@ -11,164 +12,171 @@
 
 <body>
 
-<header>
-    <h1>
-        <a href="index.html">
-            <img src="../CSS/img/Y - ZYLO_Mesa de trabajo 1.png" alt="ZYLO" logo>
-        </a>
-    </h1>
+    <header>
+        <h1>
+            <a href="index.html">
+                <img src="../CSS/img/Y - ZYLO_Mesa de trabajo 1.png" alt="ZYLO" logo>
+            </a>
+        </h1>
 
-    <nav>
-    <a href="index.html">Inicio</a>
-    <a href="nosotros.html">Nosotros</a>
-    <a href="contacto.html">Contacto</a>
-    <a href="servicios.html">Servicios</a>
-</nav>
-</header>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="nosotros.html">Nosotros</a>
+            <a href="contacto.html">Contacto</a>
+            <a href="servicios.html">Servicios</a>
+        </nav>
+    </header>
 
-<section class="hero">
+    <section class="hero">
 
-  <img src="../CSS/img/alejomiranda-ecuador-766946.jpg" alt="Chimborazo">
+        <img src="../CSS/img/alejomiranda-ecuador-766946.jpg" alt="Chimborazo">
 
-  <div class="hero-content">
-    <h1>Zylo</h1>
-    <p>Descubre el mundo a tu manera</p>
+        <div class="hero-content">
+            <h1>Zylo</h1>
+            <p>Descubre el mundo a tu manera</p>
 
-    <!-- BARRA DE BÚSQUEDA -->
-    <form id="formVuelos" class="search-bar">
-    
-
-    <select id="tipoVuelo">
-        <option value="ida">Solo ida</option>
-        <option value="idaVuelta">Ida y vuelta</option>
-    </select>
-
-    <input type="text" id="origen" placeholder="Origen">
-
-    <button type="button" class="swap">⇄</button>
-
-    <input type="text" id="destino" placeholder="Destino">
-
-    <input type="text" id="fechaSalida" placeholder="Salida">
-    <input type="text" id="fechaRegreso" placeholder="Regreso">
-
-    <select id="pasajeros">
-        <option>1 pasajero</option>
-        <option>2 pasajeros</option>
-        <option>3 pasajeros</option>
-    </select>
+            <!-- BARRA DE BÚSQUEDA -->
+            <form id="formVuelos" class="search-bar">
 
 
-    <button type="submit" id="btnBuscar">
-        Buscar
-    </button>
+                <select id="tipoVuelo">
+                    <option value="ida">Solo ida</option>
+                    <option value="idaVuelta">Ida y vuelta</option>
+                </select>
 
-    </form>
-    <div id="resultadoBusqueda" class="inicial">
-        Ingresa los datos y realiza tu búsqueda.
-    </div>
+                <input type="text" id="origen" placeholder="Origen">
 
-  </div>
-</section>
+                <button type="button" class="swap">⇄</button>
 
-<main>
-    <!-- Saludo para la bienvenida-->
-     <section>
-        <h2>Explora destinos increíbles</h2>
-        <p>Viaja a los lugares más hermosos del mundo con Zylo. Descubre paisajes únicos, culturas fascinantes y experiencias inolvidables diseñadas especialmente para ti. Desde playas paradisíacas hasta ciudades llenas de historia, hacemos de cada viaje una aventura única.</p>
-     </section>
+                <input type="text" id="destino" placeholder="Destino">
 
-     <!--Destinos-->
-     <section>
-        <h2>Destinos Populares</h2>
+                <input type="text" id="fechaSalida" placeholder="Salida">
+                <input type="text" id="fechaRegreso" placeholder="Regreso">
 
-        <div class="destinos-container">
-            <article>
-                <h3>Galápagos</h3>
-                <img src="../CSS/img/islagalapagos.jpg" alt="foto de las Islas Galápagos" width="300">
-                <p>Naturaleza única y paisajes inolvidables</p>
-            </article>
+                <select id="pasajeros">
+                    <option>1 pasajero</option>
+                    <option>2 pasajeros</option>
+                    <option>3 pasajeros</option>
+                </select>
 
-            <article>
-                <h3>París</h3>
-                <img src="../CSS/img/paris.jpg" alt="Foto tomada en el centro de París" width="300">
-                <p>Romance, cultura y arquitectura icónica</p>
-            </article>
 
-            <article>
-                <h3>New York</h3>
-                <img src="../CSS/img/newyork.jpg" alt="Foto de Times Square" width="300">
-                <p>La ciudad que nunca duerme</p>
-            </article>
-        </div>
+                <button type="submit" id="btnBuscar">
+                    Buscar
+                </button>
 
-     </section>
-
-     <section class="discount-hero">
-    <img src="../CSS/img/bulletrain743-travel-1767532.jpg" alt="Chimborazo">
-    <div class="discount-hero-content">
-        <h1>Reserve su viaje hoy mismo y obtenga un 10% de descuento en su movilización.</h1>
-        <a href="contacto.html" class="btn-contact">Contáctanos ahora</a>
-    </div>
-    </section>
-
-    <!-- Clientes Satisfechos -->
-    <section>
-        <h2>Clientes Satisfechos</h2>
-        <p style="text-align: center; margin-bottom: 40px;">Mira lo que dicen nuestros viajeros sobre sus experiencias con Zylo</p>
-        <div class="clientes-container">
-            <article class="cliente-card">
-                <div class="estrellas">★★★★★</div>
-                <p class="testimonio">"Zylo hizo que mi viaje a Galápagos fuera inolvidable. El equipo fue muy atento y profesional. ¡Lo recomiendo ampliamente!"</p>
-                <p class="cliente-nombre">- Anonimo</p>
-                <p class="cliente-ciudad">Quito, Ecuador</p>
-            </article>
-
-            <article class="cliente-card">
-                <div class="estrellas">★★★★★</div>
-                <p class="testimonio">"Excelente servicio y atención al detalle. Mi viaje a París fue perfectamente organizado. Zylo es la mejor opción."</p>
-                <p class="cliente-nombre">- Anonimo</p>
-                <p class="cliente-ciudad">Guayaquil, Ecuador</p>
-            </article>
-
-            <article class="cliente-card">
-                <div class="estrellas">★★★★★</div>
-                <p class="testimonio">"Nunca pensé que viajar a New York sería tan fácil. Zylo se encargó de todo y disfruté cada momento de mi aventura."</p>
-                <p class="cliente-nombre">- Anonimo</p>
-                <p class="cliente-ciudad">Ambato, Ecuador</p>
-            </article>
+            </form>
         </div>
     </section>
 
-</main>
+    <main>
+        <div id="resultadoBusqueda" class="inicial">
+            Ingresa los datos y realiza tu búsqueda.
+        </div>
 
-<!-- Footer -->
-<footer>
-    <p>© 2026 Zylo - Todos los derechos reservados</p>
-</footer>
+        <!-- Saludo para la bienvenida-->
+        <section>
+            <h2>Explora destinos increíbles</h2>
+            <p>Viaja a los lugares más hermosos del mundo con Zylo. Descubre paisajes únicos, culturas fascinantes y
+                experiencias inolvidables diseñadas especialmente para ti. Desde playas paradisíacas hasta ciudades
+                llenas de historia, hacemos de cada viaje una aventura única.</p>
+        </section>
+
+        <!--Destinos-->
+        <section>
+            <h2>Destinos Populares</h2>
+
+            <div class="destinos-container">
+                <article>
+                    <h3>Galápagos</h3>
+                    <img src="../CSS/img/islagalapagos.jpg" alt="foto de las Islas Galápagos" width="300">
+                    <p>Naturaleza única y paisajes inolvidables</p>
+                </article>
+
+                <article>
+                    <h3>París</h3>
+                    <img src="../CSS/img/paris.jpg" alt="Foto tomada en el centro de París" width="300">
+                    <p>Romance, cultura y arquitectura icónica</p>
+                </article>
+
+                <article>
+                    <h3>New York</h3>
+                    <img src="../CSS/img/newyork.jpg" alt="Foto de Times Square" width="300">
+                    <p>La ciudad que nunca duerme</p>
+                </article>
+            </div>
+
+        </section>
+
+        <section class="discount-hero">
+            <img src="../CSS/img/bulletrain743-travel-1767532.jpg" alt="Chimborazo">
+            <div class="discount-hero-content">
+                <h1>Reserve su viaje hoy mismo y obtenga un 10% de descuento en su movilización.</h1>
+                <a href="contacto.html" class="btn-contact">Contáctanos ahora</a>
+            </div>
+        </section>
+
+        <!-- Clientes Satisfechos -->
+        <section>
+            <h2>Clientes Satisfechos</h2>
+            <p style="text-align: center; margin-bottom: 40px;">Mira lo que dicen nuestros viajeros sobre sus
+                experiencias con Zylo</p>
+            <div class="clientes-container">
+                <article class="cliente-card">
+                    <div class="estrellas">★★★★★</div>
+                    <p class="testimonio">"Zylo hizo que mi viaje a Galápagos fuera inolvidable. El equipo fue muy
+                        atento y profesional. ¡Lo recomiendo ampliamente!"</p>
+                    <p class="cliente-nombre">- Anonimo</p>
+                    <p class="cliente-ciudad">Quito, Ecuador</p>
+                </article>
+
+                <article class="cliente-card">
+                    <div class="estrellas">★★★★★</div>
+                    <p class="testimonio">"Excelente servicio y atención al detalle. Mi viaje a París fue perfectamente
+                        organizado. Zylo es la mejor opción."</p>
+                    <p class="cliente-nombre">- Anonimo</p>
+                    <p class="cliente-ciudad">Guayaquil, Ecuador</p>
+                </article>
+
+                <article class="cliente-card">
+                    <div class="estrellas">★★★★★</div>
+                    <p class="testimonio">"Nunca pensé que viajar a New York sería tan fácil. Zylo se encargó de todo y
+                        disfruté cada momento de mi aventura."</p>
+                    <p class="cliente-nombre">- Anonimo</p>
+                    <p class="cliente-ciudad">Ambato, Ecuador</p>
+                </article>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Zylo - Todos los derechos reservados</p>
+    </footer>
 
 
     <div id="modalContacto" class="modal">
-    <div class="modal-content">
-        
-        <h2>Primera vez</h2>
-        <p>¿Deseas recibir notificaciones de tu viaje?</p>
+        <div class="modal-content">
 
-        <input type="email" id="modalEmail" placeholder="Correo electrónico">
-        <small class="error-msg" id="errorEmail"></small>
+            <h2>Primera vez</h2>
+            <p>Ingresa tus datos para obtener información de tu próximo viaje</p>
 
-        <input type="tel" id="modalPhone" placeholder="09XXXXXXXX" pattern="09[0-9]{8}">
-        <small class="error-msg" id="errorPhone"></small>
+            <input type="email" id="modalEmail" placeholder="Correo electrónico">
+            <small class="error-msg" id="errorEmail"></small>
 
-        <div class="modal-actions">
-        <button type="button" id="cancelarModal">Cancelar</button>
-        <button type="button" id="guardarModal">Continuar</button>
+            <input type="tel" id="modalPhone" placeholder="09XXXXXXXX" pattern="09[0-9]{8}">
+            <small class="error-msg" id="errorPhone"></small>
+
+            <div class="modal-actions">
+                <button type="button" id="cancelarModal">Cancelar</button>
+                <button type="button" id="guardarModal">Continuar</button>
+            </div>
+
         </div>
-
-    </div>
     </div>
 
-<script src="../JS/form.js"></script>
-<script src="../JS/pick-date.js"></script>
+    <script src="../JS/form.js"></script>
+    <script src="../JS/pick-date.js"></script>
 </body>
+
 </html>
