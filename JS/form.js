@@ -81,19 +81,164 @@ document.addEventListener("DOMContentLoaded", function () {
         resultadoBusqueda.textContent = `Buscando información de ${destino}...`;
     }
 
-    function mostrarResultado(destino) {
-        if(!resultadoBusqueda) return;
-        resultadoBusqueda.classList.remove("inicial", "buscando");
-        resultadoBusqueda.classList.add("resultado");
+    function mostrarResultado(destino, vuelos = [], origenValue = "") {
+    if(!resultadoBusqueda) return;
 
+    resultadoBusqueda.classList.remove("inicial", "buscando");
+    resultadoBusqueda.classList.add("resultado");
+
+    const tipo = tipoVuelo.value;
+
+    //caso: no hay vuelos
+    if (vuelos.length === 0) {
         resultadoBusqueda.innerHTML = `
             <div class="card-resultado">
                 <h3>Resultado de búsqueda</h3>
                 <p><strong>Destino:</strong> ${destino}</p>
-                <p>Hemos encontrado opciones disponibles para tu viaje.</p>
+                <p>No se encontraron vuelos disponibles.</p>
             </div>
         `;
+        return;
     }
+
+    // render real desde API (máx 5)
+    resultadoBusqueda.innerHTML = vuelos.slice(0, 5).map((vuelo, index) => {
+
+        const aerolinea =  vuelo.airline?.name ||  vuelo.airline ||  "Aerolínea no disponible";
+
+        // precio ficticio porque la API no proporciona la info
+        const precio = 120 + (index * 35);
+
+        return `
+                <div class="card-resultado">
+
+            <div class="vuelo-top">
+                <h3>${vuelo.departure?.scheduled?.slice(11,16) || "--:--"} - 
+                ${vuelo.arrival?.scheduled?.slice(11,16) || "--:--"}</h3>
+
+                <p class="ruta">
+                    ${origenValue || "No disponible"} → ${destino}
+                </p>
+            </div>
+
+            <div class="vuelo-middle">
+
+                <p>
+                    <strong>Aeropuerto</strong>
+                    ${vuelo.arrival?.airport || "No disponible"}
+                </p>
+
+                <p>
+                    <strong>Aerolínea</strong>
+                    ${aerolinea}
+                </p>
+
+                <p>
+                    <strong>Tipo</strong>
+                    ${tipo === "ida" ? "Solo ida" : "Ida y vuelta"}
+                </p>
+
+            </div>
+
+            <div class="vuelo-price">
+                <span>Precio estimado</span>
+                <div class="precio-valor">
+                    <h2>$${precio}</h2>
+                    <small>USD</small>
+                </div>
+            </div>
+
+                </div>
+            `;
+    }).join("");
+}
+
+
+    // CONECTAR API PARA BÚSQUEDA VUELO //
+    async function buscarVuelosAPI(fechaBusqueda) {
+
+        try {
+
+            console.log("FECHA ENVIADA A API:", fechaBusqueda);
+
+            const response = await fetch(
+                `https://api.aviationstack.com/v1/flights?access_key=089371c4fad35c56419496a728a93692&limit=100000&offset=0`
+            );
+
+            if (!response.ok) {
+                throw new Error("Error al consultar API");
+            }
+
+            const data = await response.json();
+
+            console.log("DATOS API:", data);
+
+            // Obtener mes y día del usuario
+            const fechaUsuario = new Date(fechaBusqueda);
+
+            const mesUsuario = fechaUsuario.getMonth() + 1;
+            const diaUsuario = fechaUsuario.getDate();
+
+            // Filtrar vuelos
+            const vuelosFiltrados = data.data.filter(vuelo => {
+
+                if (!vuelo.flight_date) {
+                    return false;
+                }
+
+                const fechaVuelo = new Date(vuelo.flight_date);
+
+                const mesVuelo = fechaVuelo.getMonth() + 1;
+                const diaVuelo = fechaVuelo.getDate();
+
+                return mesVuelo === mesUsuario &&
+                    diaVuelo === diaUsuario;
+
+            });
+
+            console.log("VUELOS FILTRADOS:", vuelosFiltrados);
+
+            // Mostrar primeros 5
+            vuelosFiltrados.slice(0, 5).forEach((vuelo, index) => {
+
+                console.log(`VUELO ${index + 1}`);
+
+                console.log(
+                    "Aerolínea:",
+                    vuelo.airline?.name || "No disponible"
+                );
+
+                console.log(
+                    "Salida:",
+                    vuelo.departure?.airport || "No disponible"
+                );
+
+                console.log(
+                    "Llegada:",
+                    vuelo.arrival?.airport || "No disponible"
+                );
+
+                console.log(
+                    "Estado:",
+                    vuelo.flight_status || "No disponible"
+                );
+
+                console.log("-------------------");
+
+            });
+
+            return vuelosFiltrados;
+
+        } catch(error) {
+
+            console.error("ERROR API:", error);
+
+            return [];
+
+        }
+
+    }
+        
 
 
     // === FUNCIONES DE VALIDACIÓN ===
@@ -253,6 +398,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // Recopilar datos JSON usando querySelector en destino como pide la rúbrica
                 const destino = document.querySelector("#destino").value;
+                const origenValue = document.querySelector("#origen").value.trim();
                 const datosVuelo = {
                     origen: document.querySelector("#origen").value.trim(),
                     destino: destino.trim(),
@@ -268,20 +414,43 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 mostrarEstadoBuscando(destino);
 
-                setTimeout(() => {
-                    mostrarResultado(destino);
-                }, 2000);
+                let fechaBusqueda = datosVuelo.fechaRegreso || datosVuelo.fechaSalida;
 
-                formVuelos.reset();
+                // Convertir DD/MM a YYYY-MM-DD
+                if (fechaBusqueda.includes("/")) {
+
+                    const partes = fechaBusqueda.split("/");
+
+                    const dia = partes[0];
+                    const mes = partes[1];
+
+                    const anio = new Date().getFullYear();
+
+                    fechaBusqueda = `${anio}-${mes}-${dia}`;
+                }
+
+                console.log("FECHA FORMATEADA:", fechaBusqueda);
+
+                buscarVuelosAPI(fechaBusqueda)
+                .then(vuelos => {
+
+                    mostrarResultado(destino, vuelos, origenValue);
+
+                    formVuelos.reset();
+
+                });
             }
         });
     }
 
     if (btnCancelar) {
         btnCancelar.addEventListener("click", function () {
+
             modalContacto.classList.remove("modal-active");
-            
+
             const destino = document.querySelector("#destino").value;
+            const origenValue = document.querySelector("#origen").value.trim();
+
             const datosVuelo = {
                 origen: document.querySelector("#origen").value.trim(),
                 destino: destino.trim(),
@@ -290,13 +459,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 tipoVuelo: document.getElementById("tipoVuelo") ? document.getElementById("tipoVuelo").value : "redondo",
                 contacto: "Cancelado"
             };
+
             console.log("JSON a enviar al servidor (sin contacto):", JSON.stringify(datosVuelo, null, 2));
 
             mostrarEstadoBuscando(destino);
 
-            setTimeout(() => {
-                mostrarResultado(destino);
-            }, 2000);
+            let fechaBusqueda = datosVuelo.fechaRegreso || datosVuelo.fechaSalida;
+
+            if (fechaBusqueda.includes("/")) {
+                const partes = fechaBusqueda.split("/");
+                const dia = partes[0];
+                const mes = partes[1];
+                const anio = new Date().getFullYear();
+                fechaBusqueda = `${anio}-${mes}-${dia}`;
+            }
+
+            buscarVuelosAPI(fechaBusqueda)
+            .then(vuelos => {
+                mostrarResultado(destino, vuelos, origenValue);
+            });
 
             formVuelos.reset();
         });
@@ -365,4 +546,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Inicializar la vista por defecto
     mostrarEstadoInicial();
+
+    
 });
+
+
