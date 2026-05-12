@@ -22,17 +22,20 @@ document.addEventListener("DOMContentLoaded", function () {
     const resultadoBusqueda = document.getElementById("resultadoBusqueda");
     const btnSwap = document.querySelector(".swap");
 
+    // CONTACTO
     const formContacto = document.getElementById("formContacto");
     const nombreContacto = document.getElementById("nombreContacto");
     const emailContacto = document.getElementById("emailContacto");
     const celularContacto = document.getElementById("celularContacto");
     const fechaContacto = document.getElementById("fechaContacto");
     const mensajeContacto = document.getElementById("mensajeContacto");
+
     const errorNombreContacto = document.getElementById("errorNombreContacto");
     const errorEmailContacto = document.getElementById("errorEmailContacto");
     const errorCelularContacto = document.getElementById("errorCelularContacto");
     const errorFechaContacto = document.getElementById("errorFechaContacto");
     const errorMensajeContacto = document.getElementById("errorMensajeContacto");
+
     const btnEnviarContacto = document.getElementById("btnEnviarContacto");
     const modalExito = document.getElementById("modalExito");
     const cerrarModalExito = document.getElementById("cerrarModalExito");
@@ -41,8 +44,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // === FUNCIONES DE RENDERIZADO ===
     function actualizarVisibilidadRegreso() {
         if (!tipoVuelo || !fechaRegreso) return;
+
         if (tipoVuelo.value === "ida") {
-            fechaRegreso.classList.remove("modal-active"); // Se usa en vez de style
+            fechaRegreso.classList.remove("modal-active");
             fechaRegreso.setAttribute("disabled", "true");
             fechaRegreso.value = "";
         } else {
@@ -52,109 +56,135 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function mostrarError(input, errorElement, mensaje) {
-        if(errorElement) errorElement.textContent = mensaje;
-        if(input) {
+        if (errorElement) errorElement.textContent = mensaje;
+        if (input) {
             input.classList.add("input-error");
             input.classList.remove("input-ok");
         }
     }
 
     function limpiarError(input, errorElement) {
-        if(errorElement) errorElement.textContent = "";
-        if(input) {
+        if (errorElement) errorElement.textContent = "";
+        if (input) {
             input.classList.remove("input-error");
             input.classList.add("input-ok");
         }
     }
 
     function mostrarEstadoInicial() {
-        if(!resultadoBusqueda) return;
+        if (!resultadoBusqueda) return;
         resultadoBusqueda.classList.remove("buscando", "resultado");
         resultadoBusqueda.classList.add("inicial");
         resultadoBusqueda.textContent = "Ingresa los datos y realiza tu búsqueda.";
     }
 
     function mostrarEstadoBuscando(destino) {
-        if(!resultadoBusqueda) return;
-        resultadoBusqueda.classList.remove("inicial", "resultado");
-        resultadoBusqueda.classList.add("buscando");
-        resultadoBusqueda.textContent = `Buscando información de ${destino}...`;
-    }
+    if (!resultadoBusqueda) return;
 
-    function mostrarResultado(destino, vuelos = [], origenValue = "") {
-    if(!resultadoBusqueda) return;
+    resultadoBusqueda.classList.remove("inicial", "resultado");
+    resultadoBusqueda.classList.add("buscando");
 
-    resultadoBusqueda.classList.remove("inicial", "buscando");
-    resultadoBusqueda.classList.add("resultado");
-
-    const tipo = tipoVuelo.value;
-
-    //caso: no hay vuelos
-    if (vuelos.length === 0) {
-        resultadoBusqueda.innerHTML = `
-            <div class="card-resultado">
-                <h3>Resultado de búsqueda</h3>
-                <p><strong>Destino:</strong> ${destino}</p>
-                <p>No se encontraron vuelos disponibles.</p>
-            </div>
-        `;
-        return;
-    }
-
-    // render real desde API (máx 5)
-    resultadoBusqueda.innerHTML = vuelos.slice(0, 5).map((vuelo, index) => {
-
-        const aerolinea =  vuelo.airline?.name ||  vuelo.airline ||  "Aerolínea no disponible";
-
-        // precio ficticio porque la API no proporciona la info
-        const precio = 120 + (index * 35);
-
-        return `
-                <div class="card-resultado">
-
-            <div class="vuelo-top">
-                <h3>${vuelo.departure?.scheduled?.slice(11,16) || "--:--"} - 
-                ${vuelo.arrival?.scheduled?.slice(11,16) || "--:--"}</h3>
-
-                <p class="ruta">
-                    ${origenValue || "No disponible"} → ${destino}
-                </p>
-            </div>
-
-            <div class="vuelo-middle">
-
-                <p>
-                    <strong>Aeropuerto</strong>
-                    ${vuelo.arrival?.airport || "No disponible"}
-                </p>
-
-                <p>
-                    <strong>Aerolínea</strong>
-                    ${aerolinea}
-                </p>
-
-                <p>
-                    <strong>Tipo</strong>
-                    ${tipo === "ida" ? "Solo ida" : "Ida y vuelta"}
-                </p>
-
-            </div>
-
-            <div class="vuelo-price">
-                <span>Precio estimado</span>
-                <div class="precio-valor">
-                    <h2>$${precio}</h2>
-                    <small>USD</small>
-                </div>
-            </div>
-
-                </div>
-            `;
-    }).join("");
+    resultadoBusqueda.innerHTML = `
+        <div class="loader"></div>
+        <p>Buscando información de ${destino}...</p>
+    `;
 }
 
 
-    // CONECTAR API PARA BÚSQUEDA VUELO //
+    // === MODAL DETALLE ===
+    function mostrarModalDetalle(vuelo) {
+        const modalDetalle = document.getElementById("modalDetalle");
+        const detalleContenido = document.getElementById("detalleContenido");
+        const cerrarDetalle = document.getElementById("cerrarDetalle");
+
+        if (!modalDetalle || !detalleContenido) return;
+
+        detalleContenido.innerHTML = `
+            <p><strong>Aerolínea:</strong> ${vuelo.airline?.name || "No disponible"}</p>
+            <p><strong>Vuelo:</strong> ${vuelo.flight?.iata || "No disponible"}</p>
+            <p><strong>Salida:</strong> ${vuelo.departure?.airport || "No disponible"}</p>
+            <p><strong>Llegada:</strong> ${vuelo.arrival?.airport || "No disponible"}</p>
+            <p><strong>Estado:</strong> ${vuelo.flight_status || "No disponible"}</p>
+            <p><strong>Terminal:</strong> ${vuelo.arrival?.terminal || "No disponible"}</p>
+            <p><strong>Gate:</strong> ${vuelo.arrival?.gate || "No disponible"}</p>
+        `;
+
+        modalDetalle.classList.add("modal-active");
+
+        if (cerrarDetalle) {
+            cerrarDetalle.addEventListener("click", () => {
+                modalDetalle.classList.remove("modal-active");
+            });
+        }
+    }
+
+
+    // === RENDER RESULTADOS CON FRAGMENT ===
+    function mostrarResultado(destino, vuelos = [], origenValue = "") {
+        if (!resultadoBusqueda) return;
+
+        resultadoBusqueda.classList.remove("inicial", "buscando");
+        resultadoBusqueda.classList.add("resultado");
+
+        if (vuelos.length === 0) {
+            resultadoBusqueda.innerHTML = `
+                <div class="card-resultado">
+                    <h3>Resultado de búsqueda</h3>
+                    <p><strong>Destino:</strong> ${destino}</p>
+                    <p>No se encontraron vuelos disponibles.</p>
+                </div>
+            `;
+            return;
+        }
+
+        resultadoBusqueda.innerHTML = "";
+        const fragment = document.createDocumentFragment();
+
+        vuelos.slice(0, 5).forEach((vuelo, index) => {
+
+            const aerolinea = vuelo.airline?.name || vuelo.airline || "No disponible";
+            const precio = 120 + (index * 35);
+
+            const card = document.createElement("div");
+            card.classList.add("card-resultado");
+
+            card.innerHTML = `
+                <div class="vuelo-top">
+                    <h3>${vuelo.departure?.scheduled?.slice(11, 16) || "--:--"} - 
+                    ${vuelo.arrival?.scheduled?.slice(11, 16) || "--:--"}</h3>
+
+                    <p class="ruta">
+                        ${origenValue || "No disponible"} → ${destino}
+                    </p>
+                </div>
+
+                <div class="vuelo-middle">
+                    <p><strong>Aeropuerto</strong> ${vuelo.arrival?.airport || "No disponible"}</p>
+                    <p><strong>Aerolínea</strong> ${aerolinea}</p>
+                    <p><strong>Estado</strong> ${vuelo.flight_status || "No disponible"}</p>
+                </div>
+
+                <div class="vuelo-price">
+                    <span>Precio estimado</span>
+                    <div class="precio-valor">
+                        <h2>$${precio}</h2>
+                        <small>USD</small>
+                    </div>
+                </div>
+            `;
+
+            card.addEventListener("click", () => {
+                obtenerDetalleVuelo(vuelo.flight?.iata || vuelo.flight?.number || index);
+            });
+
+            fragment.appendChild(card);
+        });
+
+        resultadoBusqueda.appendChild(fragment);
+    }
+
+
+    // === API VUELOS ===
     async function buscarVuelosAPI(fechaBusqueda) {
 
         try {
@@ -166,82 +196,107 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
             if (!response.ok) {
-                throw new Error("Error al consultar API");
+                if (response.status === 404) throw new Error("404");
+                if (response.status === 500) throw new Error("500");
+                throw new Error("otro");
             }
 
             const data = await response.json();
+            const vuelosFiltrados = data.data.filter(vuelo => vuelo.flight_date === fechaBusqueda);
 
-            console.log("DATOS API:", data);
+            return vuelosFiltrados.length > 0 ? vuelosFiltrados : data.data;
 
-            // Obtener mes y día del usuario
-            const fechaUsuario = new Date(fechaBusqueda);
+        } catch (error) {
 
-            const mesUsuario = fechaUsuario.getMonth() + 1;
-            const diaUsuario = fechaUsuario.getDate();
+    console.error("ERROR API:", error);
 
-            // Filtrar vuelos
-            const vuelosFiltrados = data.data.filter(vuelo => {
+    let mensaje = "Ocurrió un error inesperado.";
 
-                if (!vuelo.flight_date) {
-                    return false;
-                }
-
-                const fechaVuelo = new Date(vuelo.flight_date);
-
-                const mesVuelo = fechaVuelo.getMonth() + 1;
-                const diaVuelo = fechaVuelo.getDate();
-
-                return mesVuelo === mesUsuario &&
-                    diaVuelo === diaUsuario;
-
-            });
-
-            console.log("VUELOS FILTRADOS:", vuelosFiltrados);
-
-            // Mostrar primeros 5
-            vuelosFiltrados.slice(0, 5).forEach((vuelo, index) => {
-
-                console.log(`VUELO ${index + 1}`);
-
-                console.log(
-                    "Aerolínea:",
-                    vuelo.airline?.name || "No disponible"
-                );
-
-                console.log(
-                    "Salida:",
-                    vuelo.departure?.airport || "No disponible"
-                );
-
-                console.log(
-                    "Llegada:",
-                    vuelo.arrival?.airport || "No disponible"
-                );
-
-                console.log(
-                    "Estado:",
-                    vuelo.flight_status || "No disponible"
-                );
-
-                console.log("-------------------");
-
-            });
-
-            return vuelosFiltrados;
-
-        } catch(error) {
-
-            console.error("ERROR API:", error);
-
-            return [];
-
-        }
-
+    // Sin conexión
+    if (error instanceof TypeError) {
+        mensaje = "No hay conexión a internet. Verifica tu red e intenta nuevamente.";
     }
-        
+    // Error 404
+    else if (error.message === "404") {
+        mensaje = "No se encontraron resultados (Error 404).";
+    }
+    // Error 500
+    else if (error.message === "500") {
+        mensaje = "Error del servidor (500). Intenta más tarde.";
+    }
+
+    if (resultadoBusqueda) {
+        resultadoBusqueda.innerHTML = `
+            <p class="error-api">${mensaje}</p>
+            <button id="btnReintentar" class="btn-reintentar">Reintentar</button>
+        `;
+
+        const btnReintentar = document.getElementById("btnReintentar");
+        if (btnReintentar) {
+            btnReintentar.addEventListener("click", async () => {
+
+    const destino = destinoInput.value.trim();
+    const origenValue = origen.value.trim();
+
+    if (!destino || !origenValue || !fechaSalida.value.trim()) {
+        mostrarEstadoInicial();
+        return;
+    }
+
+    mostrarEstadoBuscando(destino);
+
+    let fechaBusqueda = (tipoVuelo.value === "ida") 
+        ? fechaSalida.value 
+        : (fechaRegreso.value || fechaSalida.value);
+
+    if (fechaBusqueda.includes("/")) {
+        const partes = fechaBusqueda.split("/");
+        const dia = partes[0];
+        const mes = partes[1];
+        const anio = new Date().getFullYear();
+        fechaBusqueda = `${anio}-${mes}-${dia}`;
+    }
+
+    const vuelos = await buscarVuelosAPI(fechaBusqueda);
+
+    if (vuelos === null) return;
+
+    mostrarResultado(destino, vuelos, origenValue);
+});
+        }
+    }
+
+    return null;
+}
+    }
 
 
-    // === FUNCIONES DE VALIDACIÓN ===
+    // === DETALLE DEL VUELO (SEGUNDO FETCH) ===
+    async function obtenerDetalleVuelo(idVuelo) {
+        try {
+            const response = await fetch(
+                `https://api.aviationstack.com/v1/flights?access_key=089371c4fad35c56419496a728a93692&flight_iata=${idVuelo}`
+            );
+
+            if (!response.ok) throw new Error("Error detalle");
+
+            const data = await response.json();
+            const vueloDetalle = data.data[0];
+
+            if (!vueloDetalle) {
+                alert("No se encontró detalle del vuelo.");
+                return;
+            }
+
+            mostrarModalDetalle(vueloDetalle);
+
+        } catch (error) {
+            alert("Error al obtener detalle del vuelo.");
+        }
+    }
+
+
+    // === VALIDACIONES ===
     function validarEmail(valor) {
         const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regexEmail.test(valor);
@@ -254,16 +309,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function validarFechasViaje() {
         let esValido = true;
-        
+
         const inputsAValidar = [origen, destinoInput, fechaSalida];
+
         if (tipoVuelo && tipoVuelo.value !== "ida") {
             inputsAValidar.push(fechaRegreso);
         }
 
         [origen, destinoInput, fechaSalida, fechaRegreso].forEach(input => {
-             if(input) input.classList.remove("input-error");
+            if (input) input.classList.remove("input-error");
         });
-        
+
         inputsAValidar.forEach(input => {
             if (!input.value.trim()) {
                 input.classList.add("input-error");
@@ -276,14 +332,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function actualizarBotonGuardar() {
         if (!email || !phone || !btnGuardar) return;
+
         const emailOk = validarEmail(email.value.trim());
         const phoneOk = validarTelefono(phone.value.trim());
+
         btnGuardar.disabled = !(emailOk && phoneOk);
     }
 
     function validarCamposContacto() {
         let esValido = true;
-        
+
         const campos = [
             { el: nombreContacto, errEl: errorNombreContacto, regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{3,}$/, msg: "Mínimo 3 letras." },
             { el: emailContacto, errEl: errorEmailContacto, regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, msg: "Correo inválido. Ej: usuario@gmail.com" },
@@ -294,7 +352,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         campos.forEach(campo => {
             if (!campo.el) return;
+
             const val = campo.el.value.trim();
+
             if (val.length === 0) {
                 if (campo.errEl) campo.errEl.textContent = "Este campo es requerido.";
                 campo.el.classList.add("input-error");
@@ -314,15 +374,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // === ESCUCHADORES DE EVENTOS ===
+    // === EVENTOS ===
 
-    // Remover error rojo al escribir
     [origen, destinoInput, fechaSalida, fechaRegreso, tipoVuelo].forEach(input => {
         if (input) {
-            input.addEventListener("input", function() {
+            input.addEventListener("input", function () {
                 this.classList.remove("input-error");
             });
-            input.addEventListener("change", function() {
+            input.addEventListener("change", function () {
                 this.classList.remove("input-error");
             });
         }
@@ -363,13 +422,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+
+    // SUBMIT BUSQUEDA
     if (formVuelos) {
         formVuelos.addEventListener("submit", function (event) {
             event.preventDefault();
 
-            if (!validarFechasViaje()) {
-                return;
-            }
+            if (!validarFechasViaje()) return;
 
             modalContacto.classList.add("modal-active");
             btnGuardar.disabled = true;
@@ -385,8 +444,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+
+    // GUARDAR MODAL
     if (btnGuardar) {
-        btnGuardar.addEventListener("click", function () {
+       btnGuardar.addEventListener("click", async function () {
             const emailOk = validarEmail(email.value.trim());
             const phoneOk = validarTelefono(phone.value.trim());
 
@@ -394,55 +455,48 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!phoneOk) mostrarError(phone, errorPhone, "Teléfono inválido. Debe tener 10 dígitos.");
 
             if (emailOk && phoneOk) {
+
                 modalContacto.classList.remove("modal-active");
 
-                // Recopilar datos JSON usando querySelector en destino como pide la rúbrica
-                const destino = document.querySelector("#destino").value;
-                const origenValue = document.querySelector("#origen").value.trim();
+                const destino = destinoInput.value.trim();
+                const origenValue = origen.value.trim();
+
                 const datosVuelo = {
                     origen: document.querySelector("#origen").value.trim(),
                     destino: destino.trim(),
                     fechaSalida: document.getElementById("fechaSalida").value,
-                    fechaRegreso: document.getElementById("fechaRegreso") ? document.getElementById("fechaRegreso").value : null,
+                    fechaRegreso: (tipoVuelo.value === "ida") ? null : document.getElementById("fechaRegreso").value,
                     tipoVuelo: document.getElementById("tipoVuelo") ? document.getElementById("tipoVuelo").value : "redondo",
                     contacto: {
                         email: email.value.trim(),
                         telefono: phone.value.trim()
                     }
                 };
+
                 console.log("JSON a enviar al servidor:", JSON.stringify(datosVuelo, null, 2));
 
                 mostrarEstadoBuscando(destino);
 
                 let fechaBusqueda = datosVuelo.fechaRegreso || datosVuelo.fechaSalida;
 
-                // Convertir DD/MM a YYYY-MM-DD
                 if (fechaBusqueda.includes("/")) {
-
                     const partes = fechaBusqueda.split("/");
-
                     const dia = partes[0];
                     const mes = partes[1];
-
                     const anio = new Date().getFullYear();
-
                     fechaBusqueda = `${anio}-${mes}-${dia}`;
                 }
 
-                console.log("FECHA FORMATEADA:", fechaBusqueda);
-
-                buscarVuelosAPI(fechaBusqueda)
-                .then(vuelos => {
-
+                const vuelos = await buscarVuelosAPI(fechaBusqueda);
+                    if (vuelos === null) return;
                     mostrarResultado(destino, vuelos, origenValue);
-
                     formVuelos.reset();
-
-                });
-            }
+                }
         });
     }
 
+
+    // CANCELAR MODAL
     if (btnCancelar) {
         btnCancelar.addEventListener("click", function () {
 
@@ -455,7 +509,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 origen: document.querySelector("#origen").value.trim(),
                 destino: destino.trim(),
                 fechaSalida: document.getElementById("fechaSalida").value,
-                fechaRegreso: document.getElementById("fechaRegreso") ? document.getElementById("fechaRegreso").value : null,
+                fechaRegreso: (tipoVuelo.value === "ida") ? null : document.getElementById("fechaRegreso").value,
                 tipoVuelo: document.getElementById("tipoVuelo") ? document.getElementById("tipoVuelo").value : "redondo",
                 contacto: "Cancelado"
             };
@@ -475,21 +529,29 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             buscarVuelosAPI(fechaBusqueda)
-            .then(vuelos => {
-                mostrarResultado(destino, vuelos, origenValue);
-            });
+                .then(vuelos => {
+
+                    if (vuelos === null) return;
+
+                    mostrarResultado(destino, vuelos, origenValue);
+                });
 
             formVuelos.reset();
         });
     }
 
-    // Eventos Contacto
+
+    // CONTACTO VALIDACION + MODAL
     if (formContacto) {
-        const aplicarError = function(input, errorElement, regex, msg) {
+
+        const aplicarError = function (input, errorElement, regex, msg) {
             if (!input) return;
-            input.addEventListener("input", function() {
+
+            input.addEventListener("input", function () {
+
                 const val = input.value.trim();
-                if(val.length === 0) {
+
+                if (val.length === 0) {
                     if (errorElement) errorElement.textContent = "Este campo es requerido.";
                     input.classList.add("input-error");
                     input.classList.remove("input-ok");
@@ -502,6 +564,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     input.classList.remove("input-error");
                     input.classList.add("input-ok");
                 }
+
                 validarCamposContacto();
             });
         };
@@ -512,10 +575,11 @@ document.addEventListener("DOMContentLoaded", function () {
         aplicarError(fechaContacto, errorFechaContacto, /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/, "Formato inválido.");
         aplicarError(mensajeContacto, errorMensajeContacto, /^.{10,}$/, "El mensaje debe tener al menos 10 caracteres.");
 
-        formContacto.addEventListener("submit", function(event) {
-            event.preventDefault(); // Evitar recargar la página
+        formContacto.addEventListener("submit", function (event) {
+            event.preventDefault();
 
             if (validarCamposContacto()) {
+
                 const datosContacto = {
                     nombre: nombreContacto.value.trim(),
                     email: emailContacto.value.trim(),
@@ -524,13 +588,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     destino: document.getElementById("destinoContacto") ? document.getElementById("destinoContacto").value : "",
                     mensaje: mensajeContacto.value.trim()
                 };
-                
+
                 console.log("JSON a enviar al servidor (Contacto):", JSON.stringify(datosContacto, null, 2));
-                
+
                 if (modalExito) {
                     modalExito.classList.add("modal-active");
                 }
+
                 formContacto.reset();
+
                 [nombreContacto, emailContacto, celularContacto, fechaContacto, mensajeContacto].forEach(input => {
                     if (input) input.classList.remove("input-error", "input-ok");
                 });
@@ -538,16 +604,15 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         if (cerrarModalExito) {
-            cerrarModalExito.addEventListener("click", function() {
+            cerrarModalExito.addEventListener("click", function () {
                 modalExito.classList.remove("modal-active");
             });
         }
     }
 
-    // Inicializar la vista por defecto
+    // INICIALIZAR
     mostrarEstadoInicial();
 
-    
 });
 
 
