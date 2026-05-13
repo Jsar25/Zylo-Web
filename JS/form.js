@@ -79,16 +79,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function mostrarEstadoBuscando(destino) {
-    if (!resultadoBusqueda) return;
+        if (!resultadoBusqueda) return;
 
-    resultadoBusqueda.classList.remove("inicial", "resultado");
-    resultadoBusqueda.classList.add("buscando");
+        resultadoBusqueda.classList.remove("inicial", "resultado");
+        resultadoBusqueda.classList.add("buscando");
 
-    resultadoBusqueda.innerHTML = `
+        resultadoBusqueda.innerHTML = `
         <div class="loader"></div>
         <p>Buscando información de ${destino}...</p>
     `;
-}
+    }
 
 
     // === MODAL DETALLE ===
@@ -208,66 +208,66 @@ document.addEventListener("DOMContentLoaded", function () {
 
         } catch (error) {
 
-    console.error("ERROR API:", error);
+            console.error("ERROR API:", error);
 
-    let mensaje = "Ocurrió un error inesperado.";
+            let mensaje = "Ocurrió un error inesperado.";
 
-    // Sin conexión
-    if (error instanceof TypeError) {
-        mensaje = "No hay conexión a internet. Verifica tu red e intenta nuevamente.";
-    }
-    // Error 404
-    else if (error.message === "404") {
-        mensaje = "No se encontraron resultados (Error 404).";
-    }
-    // Error 500
-    else if (error.message === "500") {
-        mensaje = "Error del servidor (500). Intenta más tarde.";
-    }
+            // Sin conexión
+            if (error instanceof TypeError) {
+                mensaje = "No hay conexión a internet. Verifica tu red e intenta nuevamente.";
+            }
+            // Error 404
+            else if (error.message === "404") {
+                mensaje = "No se encontraron resultados (Error 404).";
+            }
+            // Error 500
+            else if (error.message === "500") {
+                mensaje = "Error del servidor (500). Intenta más tarde.";
+            }
 
-    if (resultadoBusqueda) {
-        resultadoBusqueda.innerHTML = `
+            if (resultadoBusqueda) {
+                resultadoBusqueda.innerHTML = `
             <p class="error-api">${mensaje}</p>
             <button id="btnReintentar" class="btn-reintentar">Reintentar</button>
         `;
 
-        const btnReintentar = document.getElementById("btnReintentar");
-        if (btnReintentar) {
-            btnReintentar.addEventListener("click", async () => {
+                const btnReintentar = document.getElementById("btnReintentar");
+                if (btnReintentar) {
+                    btnReintentar.addEventListener("click", async () => {
 
-    const destino = destinoInput.value.trim();
-    const origenValue = origen.value.trim();
+                        const destino = destinoInput.value.trim();
+                        const origenValue = origen.value.trim();
 
-    if (!destino || !origenValue || !fechaSalida.value.trim()) {
-        mostrarEstadoInicial();
-        return;
-    }
+                        if (!destino || !origenValue || !fechaSalida.value.trim()) {
+                            mostrarEstadoInicial();
+                            return;
+                        }
 
-    mostrarEstadoBuscando(destino);
+                        mostrarEstadoBuscando(destino);
 
-    let fechaBusqueda = (tipoVuelo.value === "ida") 
-        ? fechaSalida.value 
-        : (fechaRegreso.value || fechaSalida.value);
+                        let fechaBusqueda = (tipoVuelo.value === "ida")
+                            ? fechaSalida.value
+                            : (fechaRegreso.value || fechaSalida.value);
 
-    if (fechaBusqueda.includes("/")) {
-        const partes = fechaBusqueda.split("/");
-        const dia = partes[0];
-        const mes = partes[1];
-        const anio = new Date().getFullYear();
-        fechaBusqueda = `${anio}-${mes}-${dia}`;
-    }
+                        if (fechaBusqueda.includes("/")) {
+                            const partes = fechaBusqueda.split("/");
+                            const dia = partes[0];
+                            const mes = partes[1];
+                            const anio = new Date().getFullYear();
+                            fechaBusqueda = `${anio}-${mes}-${dia}`;
+                        }
 
-    const vuelos = await buscarVuelosAPI(fechaBusqueda);
+                        const vuelos = await buscarVuelosAPI(fechaBusqueda);
 
-    if (vuelos === null) return;
+                        if (vuelos === null) return;
 
-    mostrarResultado(destino, vuelos, origenValue);
-});
+                        mostrarResultado(destino, vuelos, origenValue);
+                    });
+                }
+            }
+
+            return null;
         }
-    }
-
-    return null;
-}
     }
 
 
@@ -447,7 +447,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // GUARDAR MODAL
     if (btnGuardar) {
-       btnGuardar.addEventListener("click", async function () {
+        btnGuardar.addEventListener("click", async function () {
             const emailOk = validarEmail(email.value.trim());
             const phoneOk = validarTelefono(phone.value.trim());
 
@@ -488,10 +488,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 const vuelos = await buscarVuelosAPI(fechaBusqueda);
-                    if (vuelos === null) return;
-                    mostrarResultado(destino, vuelos, origenValue);
-                    formVuelos.reset();
-                }
+                if (vuelos === null) return;
+                mostrarResultado(destino, vuelos, origenValue);
+                formVuelos.reset();
+            }
         });
     }
 
@@ -541,6 +541,82 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    async function enviarEmailContacto(datosContacto) {
+
+        const nombreCodificado = encodeURIComponent(datosContacto.nombre);
+        const url = `https://api.web3forms.com/submit?ref=${nombreCodificado}`;
+
+        try {
+            btnEnviarContacto.textContent = "Enviando...";
+            btnEnviarContacto.disabled = true;
+
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify({
+                    access_key: "d3d588dc-8eeb-44e7-9444-7743782f6c8d",
+                    from_name: "Zylo Viajes",
+                    Nombre: datosContacto.nombre,
+                    Email: datosContacto.email,
+                    Asunto: `Nuevo contacto de ${datosContacto.nombre}`,
+                    subject: `Nuevo contacto desde Zylo: ${datosContacto.nombre}`,
+                    Mensaje: `
+                        Destino de interés: ${datosContacto.destino}
+                        Número de Celular: ${datosContacto.celular}
+                        Fecha tentativa de viaje: ${datosContacto.fecha}
+                        Mensaje del cliente: ${datosContacto.mensaje}
+                    `
+                })
+            });
+
+            if (!response.ok) {
+                if (response.status === 404) throw new Error("404");
+                if (response.status >= 500) throw new Error("500");
+                throw new Error("Otro error HTTP");
+            }
+
+
+            const data = await response.json();
+
+            console.log("Estado:", data.success, "Mensaje:", data.message);
+
+            if (data.success) {
+                if (modalExito) {
+                    modalExito.classList.add("modal-active");
+                }
+
+                formContacto.reset();
+                [nombreContacto, emailContacto, celularContacto, fechaContacto, mensajeContacto].forEach(input => {
+                    if (input) input.classList.remove("input-error", "input-ok");
+                });
+            } else {
+                throw new Error("Error en la API");
+            }
+
+        } catch (error) {
+            console.error("Error enviando email:", error);
+
+            let mensajeError = "Ocurrió un error inesperado al enviar el mensaje.";
+
+            if (error instanceof TypeError) {
+                mensajeError = "No hay conexión a internet o el servicio está bloqueado.";
+            } else if (error.message === "404") {
+                mensajeError = "El servicio de envío no fue encontrado (Error 404).";
+            } else if (error.message === "500") {
+                mensajeError = "Error en el servidor de envíos (500). Intenta más tarde.";
+            }
+
+            alert(mensajeError);
+
+        } finally {
+            btnEnviarContacto.textContent = "Enviar";
+            btnEnviarContacto.disabled = false;
+        }
+    }
+
     // CONTACTO VALIDACION + MODAL
     if (formContacto) {
 
@@ -575,7 +651,7 @@ document.addEventListener("DOMContentLoaded", function () {
         aplicarError(fechaContacto, errorFechaContacto, /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/, "Formato inválido.");
         aplicarError(mensajeContacto, errorMensajeContacto, /^.{10,}$/, "El mensaje debe tener al menos 10 caracteres.");
 
-        formContacto.addEventListener("submit", function (event) {
+        formContacto.addEventListener("submit", async function (event) {
             event.preventDefault();
 
             if (validarCamposContacto()) {
@@ -589,17 +665,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     mensaje: mensajeContacto.value.trim()
                 };
 
-                console.log("JSON a enviar al servidor (Contacto):", JSON.stringify(datosContacto, null, 2));
-
-                if (modalExito) {
-                    modalExito.classList.add("modal-active");
-                }
-
-                formContacto.reset();
-
-                [nombreContacto, emailContacto, celularContacto, fechaContacto, mensajeContacto].forEach(input => {
-                    if (input) input.classList.remove("input-error", "input-ok");
-                });
+                // Llamada a la API de Resend
+                await enviarEmailContacto(datosContacto);
             }
         });
 
