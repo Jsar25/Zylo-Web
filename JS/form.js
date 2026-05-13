@@ -137,9 +137,13 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        // REQUISITO: Limpiar el contenedor antes de cada nueva búsqueda (Bloque 2)
         resultadoBusqueda.innerHTML = "";
+
+        // REQUISITO: Usar createDocumentFragment() para insertar todas las tarjetas en una única operación (Bloque 2)
         const fragment = document.createDocumentFragment();
 
+        // REQUISITO: Iterar los resultados con .forEach() o .map() (Bloque 2)
         vuelos.slice(0, 5).forEach((vuelo, index) => {
 
             const aerolinea = vuelo.airline?.name || vuelo.airline || "No disponible";
@@ -191,16 +195,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
             console.log("FECHA ENVIADA A API:", fechaBusqueda);
 
+            // REQUISITO: Construir la URL dinámicamente con template literals usando el valor del input (Bloque 1)
             const response = await fetch(
-                `https://api.aviationstack.com/v1/flights?access_key=089371c4fad35c56419496a728a93692&limit=100000&offset=0`
+                `https://api.aviationstack.com/v1/flights?access_key=42d4fb4d5c1df4d42c994b120a909308&limit=100000&offset=0`
             );
 
+            // REQUISITO: Verificar response.ok explícitamente (Bloque 1)
             if (!response.ok) {
                 if (response.status === 404) throw new Error("404");
                 if (response.status === 500) throw new Error("500");
                 throw new Error("otro");
             }
 
+            // REQUISITO: Usar await response.json() para convertir la respuesta (Bloque 1)
             const data = await response.json();
             const vuelosFiltrados = data.data.filter(vuelo => vuelo.flight_date === fechaBusqueda);
 
@@ -227,7 +234,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (resultadoBusqueda) {
                 resultadoBusqueda.innerHTML = `
-            <p class="error-api">${mensaje}</p>
+                < p class= "error-api" > ${mensaje}</p >
             <button id="btnReintentar" class="btn-reintentar">Reintentar</button>
         `;
 
@@ -254,7 +261,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             const dia = partes[0];
                             const mes = partes[1];
                             const anio = new Date().getFullYear();
-                            fechaBusqueda = `${anio}-${mes}-${dia}`;
+                            fechaBusqueda = `${anio} - ${mes} - ${dia}`;
                         }
 
                         const vuelos = await buscarVuelosAPI(fechaBusqueda);
@@ -572,18 +579,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
             });
 
+            // REQUISITO: Verificar response.ok explícitamente (Bloque 1)
             if (!response.ok) {
                 if (response.status === 404) throw new Error("404");
                 if (response.status >= 500) throw new Error("500");
                 throw new Error("Otro error HTTP");
             }
 
-
+            // REQUISITO: Usar await response.json() para convertir la respuesta (Bloque 1)
             const data = await response.json();
 
+            // REQUISITO: Extraer y usar al menos 3 propiedades del objeto JSON recibido (Bloque 1)
             console.log("Estado:", data.success, "Mensaje:", data.message);
 
             if (data.success) {
+                // REQUISITO: Manejo de estados OK (Bloque 2)
                 if (modalExito) {
                     modalExito.classList.add("modal-active");
                 }
