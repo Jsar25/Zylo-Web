@@ -234,9 +234,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (resultadoBusqueda) {
                 resultadoBusqueda.innerHTML = `
-                < p class= "error-api" > ${mensaje}</p >
-            <button id="btnReintentar" class="btn-reintentar">Reintentar</button>
-        `;
+                <p class="error-api">${mensaje}</p>
+                <button id="btnReintentar" class="btn-reintentar">Reintentar</button>
+            `;
 
                 const btnReintentar = document.getElementById("btnReintentar");
                 if (btnReintentar) {
